@@ -1,4 +1,5 @@
 import os
+import re
 import time
 import uuid
 from datetime import datetime, timezone
@@ -28,6 +29,12 @@ class DocumentService:
         """
         start_time = time.perf_counter()
         
+        # Clean filename to prevent path traversal, directory breakouts, and script injections
+        filename = os.path.basename(filename)
+        filename = re.sub(r"[^\w\s\-\.]", "", filename).strip()
+        if not filename:
+            filename = "unnamed_document"
+
         # Determine file type
         ext = os.path.splitext(filename)[1].lower()
         if ext not in [".txt", ".pdf", ".docx", ".md"]:

@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     VERSION: str = "0.1.0"
     SQLITE_DB_PATH: str = "graphrag.db"
+    ALLOWED_ORIGINS: list[str] = ["http://localhost:3000"]
 
     # Database Connections
     NEO4J_URI: str = "bolt://localhost:7687"
