@@ -1,0 +1,22 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install package files
+COPY frontend/package*.json ./
+RUN npm install
+
+# Copy frontend source code
+COPY frontend/ ./
+
+# Build Next.js app
+RUN npm run build
+
+# Expose web port
+EXPOSE 3000
+
+ENV PORT=3000
+ENV HOST=0.0.0.0
+
+# Start server
+CMD ["npm", "start"]
