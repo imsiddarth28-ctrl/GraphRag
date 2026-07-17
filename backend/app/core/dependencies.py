@@ -1,9 +1,14 @@
 import logging
-from fastapi import Request
+from fastapi import Request, Depends
 from app.config.settings import Settings, settings
 from app.core.logging import get_configured_logger
 from app.graph.neo4j_manager import Neo4jManager
 from app.retrieval.qdrant_manager import QdrantManager
+from app.repositories.document_repository import DocumentRepository
+from app.services.document_service import DocumentService
+
+# Cache document repository singleton for local sqlite access
+_document_repo = None
 
 def get_settings() -> Settings:
     """
@@ -33,3 +38,20 @@ def get_qdrant(request: Request) -> QdrantManager:
     Retrieves the manager stored in FastAPI app state.
     """
     return request.app.state.qdrant_manager
+
+def get_document_repository() -> DocumentRepository:
+    """
+    Dependency provider returning the SQLite DocumentRepository instance.
+    """
+    global _document_repo
+    if _document_repo is None:
+        _document_repo = DocumentRepository(db_path=settings.SQLITE_DB_PATH)
+    return _document_repo
+
+def get_document_service(
+    repo: DocumentRepository = Depends(get_document_repository)
+) -> DocumentService:
+    """
+    Dependency provider returning the DocumentService instance.
+    """
+    return DocumentService(repository=repo)

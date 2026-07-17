@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     PORT: int = 8000
     LOG_LEVEL: str = "INFO"
     VERSION: str = "0.1.0"
+    SQLITE_DB_PATH: str = "graphrag.db"
 
     # Database Connections
     NEO4J_URI: str = "bolt://localhost:7687"

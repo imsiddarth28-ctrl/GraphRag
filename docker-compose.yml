@@ -16,7 +16,7 @@ services:
       neo4j:
         condition: service_healthy
       qdrant:
-        condition: service_healthy
+        condition: service_started
 
   frontend:
     build:
@@ -57,12 +57,6 @@ services:
       - "6334:6334" # gRPC port
     volumes:
       - qdrant_storage:/qdrant/storage
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 5s
 
 volumes:
   neo4j_data:
