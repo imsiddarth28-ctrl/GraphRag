@@ -1,7 +1,7 @@
 import os
 import time
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Tuple
 import pdfplumber
 import docx
@@ -66,7 +66,7 @@ class DocumentService:
             filename=filename,
             type=ext.replace(".", ""),
             size=size,
-            created_at=datetime.utcnow(),
+            created_at=datetime.now(timezone.utc),
             status=status
         )
 
