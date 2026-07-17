@@ -69,6 +69,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Register chunk processing router
+from app.api.chunk_routes import router as chunk_router
+app.include_router(chunk_router)
+
 @app.get("/")
 async def get_root():
     """
